@@ -1,5 +1,36 @@
+// https://www.apollographql.com/docs/react/api/react/hooks/#usemutation
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+
+import ErrorMessage from './ErrorMessage';
 import useForm from '../lib/useForm';
 import Form from "./styles/Form";
+
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    # Which Variables are getting passed in? And what Types are they?
+    $name: String!
+    $description: String!
+    $price: Int!
+    # Docs: https://www.graphql-modules.com/docs/index
+    $image: Upload  # More Docs: https://github.com/jaydenseric/graphql-upload
+  ) {
+    createProduct(
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        status: "AVAILABLE"
+        photo: { create: { image: $image, altText: $name } }
+      }
+    ){
+    id
+    name
+    price
+    description
+  }
+  } 
+`;
 
 export default function CreateProduct() {
   const { inputs, handleChange, resetForm, clearForm } = useForm({
@@ -9,16 +40,26 @@ export default function CreateProduct() {
     description: 'Say my Name',
   });
 
-  function handleSubmit(e) {
+  // * Docs: https://www.apollographql.com/docs/react/data/mutations/
+  const [createProduct, { loading, error, data }] = useMutation(
+    CREATE_PRODUCT_MUTATION, 
+    { variables: inputs },
+  );
+  console.log('resData:', data);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     console.log(inputs);
+    // ? Submit the Input Fields to the Backend! 
+    await createProduct();  //  * Variables are passed in useMutation! If not, use: createProduct({ variables: inputs })
     clearForm();
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      <ErrorMessage error={error} />
       {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset */}
-      <fieldset>  {/* Help set Attributes for the whole group of inputs!!! */}
+      <fieldset disabled={loading} aria-busy={loading}>  {/* Help set Attributes for the whole group of inputs!!! */}
         <label htmlFor='image'>
           Image
           <input 
