@@ -2,6 +2,8 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 
+// https://nextjs.org/docs/routing/introduction
+import Router from 'next/router';
 import { ALL_PRODUCTS_QUERY } from './Products';
 import ErrorMessage from './ErrorMessage';
 import useForm from '../lib/useForm';
@@ -50,7 +52,6 @@ export default function CreateProduct() {
       refetchQueries: [{ query: ALL_PRODUCTS_QUERY }] 
     }
   );
-  console.log('resData:', data);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -58,6 +59,11 @@ export default function CreateProduct() {
     // ? Submit the Input Fields to the Backend! 
     await createProduct();  //  * Variables are passed in useMutation! If not, use: createProduct({ variables: inputs })
     clearForm();
+
+    // ? Go to the All Products Page!
+    Router.push({ //  * Docs: https://nextjs.org/docs/api-reference/next/router#router-object
+      pathname: `/products/`,
+    });
   };
 
   return (
