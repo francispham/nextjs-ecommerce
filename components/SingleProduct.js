@@ -1,5 +1,10 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
+import styled from 'styled-components';
+
+// https://nextjs.org/docs/api-reference/next/head
+import Head from 'next/head';
+
 import ErrorMessage from "./ErrorMessage";
 
 // * Docs: https://graphql.org/learn/queries/
@@ -20,6 +25,21 @@ export const SINGLE_ITEM_QUERY = gql`
   }
 `;
 
+const ProductStyles = styled.div`
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  max-width: var(--maxWidth);
+  justify-content: center;
+  align-items: top;
+  gap: 2rem;
+  img {
+    width: 100%;
+    padding: 2rem;
+    object-fit: contain;
+  }
+`;
+
 export default function SingleProduct({ id }) {
   const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
     variables: { id }
@@ -30,13 +50,20 @@ export default function SingleProduct({ id }) {
   if (error) return <ErrorMessage error={error} />;
 
   const { Product: { name, description, photo } } = data;
-  console.log('photo:', photo);
-  return <div>
-    <img
-      src={photo.image.publicUrlTransformed}
-      alt={photo.altText}
-    />
-    <h2>{name}</h2>
-    <p>{description}</p>
-  </div>;
+
+  return (
+    <ProductStyles>
+      <Head>
+        <title>Ecommerce | {name}</title>
+      </Head>
+      <img
+        src={photo.image.publicUrlTransformed}
+        alt={photo.altText}
+      />
+      <div className='details'>
+        <h2>{name}</h2>
+        <p>{description}</p>
+      </div>
+    </ProductStyles>
+  );
 };
