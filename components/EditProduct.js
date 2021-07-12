@@ -40,18 +40,19 @@ export default function EditProduct({ id }) {
   ] = useMutation(EDIT_PRODUCT_MUTATION);
   console.log('Edit Data: ', editData, 'Edit Loading: ', editLoading, 'Edit Error: ', editError);
 
-  if (loading) return <p>Loading...</p>;
+  //  ? Checkout this: https://courses.wesbos.com/account/access/5de16bf6a0fbbc5276b71e4d/view/507156506
+  
   if (error) return <ErrorMessage error={error} />;
-
+  
   //  ? 3. Create State for Form Input
   const { inputs: { name, description, price }, handleChange } = useForm(data?.Product);
+  if (loading) return <p>Loading...</p>;
   //  ? 4. Create Form to Handle Edit
   return (
     <ProductStyles>
       <Head>
         <title>Ecommerce | Editing {name}</title>
       </Head>
-      <p>EDITING PRODUCT ID: {id}</p>
       <Form onSubmit={async (e) => {
         e.preventDefault();
 
