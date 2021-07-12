@@ -8,8 +8,8 @@ import Head from 'next/head';
 import ErrorMessage from "./ErrorMessage";
 
 // * Docs: https://graphql.org/learn/queries/
-export const SINGLE_ITEM_QUERY = gql`
-  query SINGLE_ITEM_QUERY($id: ID!) {
+export const SINGLE_PRODUCT_QUERY = gql`
+  query SINGLE_PRODUCT_QUERY($id: ID!) {
     Product(where: {id: $id}) {
       name
       price
@@ -25,7 +25,7 @@ export const SINGLE_ITEM_QUERY = gql`
   }
 `;
 
-const ProductStyles = styled.div`
+export const ProductStyles = styled.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -41,7 +41,7 @@ const ProductStyles = styled.div`
 `;
 
 export default function SingleProduct({ id }) {
-  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
+  const { data, loading, error } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: { id }
   });
   console.log({ data, loading, error });  // ? Dealing with Multiple Values with Object!
