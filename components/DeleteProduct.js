@@ -10,8 +10,20 @@ const DELETE_PRODUCT_MUTATION = gql`
   }
 `;
 
+function update(cache, payload) {
+  //  * Docs: https://www.apollographql.com/docs/react/caching/garbage-collection/#cacheevict
+  cache.evict(cache.identify(payload.data.deleteProduct));  // * Docs: https://www.apollographql.com/docs/react/caching/cache-interaction/#obtaining-an-objects-custom-id
+};
+
 export default function DeleteProduct({ id, children }) {
-  const [deleteProduct, { loading }] = useMutation(DELETE_PRODUCT_MUTATION, { variables: { id }});
+  const [deleteProduct, { loading }] = useMutation(
+    DELETE_PRODUCT_MUTATION, 
+    { 
+      variables: { id },
+      update  // * Docs: https://www.apollographql.com/docs/react/data/mutations/#options
+    }
+  );
+
   return (
     <button 
       type='button'
