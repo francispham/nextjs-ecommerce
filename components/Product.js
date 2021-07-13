@@ -1,8 +1,9 @@
 // https://nextjs.org/docs/api-reference/next/link
 import Link from 'next/link';
-import formatMoney from '../lib/formatMoney';
 
+import formatMoney from '../lib/formatMoney';
 import ItemStyled from './styles/ItemStyles';
+import DeleteProduct from './DeleteProduct';
 import PriceTag from './styles/PriceTag';
 import Title from './styles/Title';
 
@@ -30,6 +31,7 @@ export default function Product({ product }) {
         }}>
           Edit 📝
         </Link>
+        <DeleteProduct id={product.id}>Delete</DeleteProduct>
       </div>
     </ItemStyled>
   );
