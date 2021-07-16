@@ -8,7 +8,7 @@ import { perPage } from '../config';
 import Product from './Product';
 
 export const ALL_PRODUCTS_QUERY = gql`
-  query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {   # https://graphql.org/learn/queries/
+  query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {   # https://graphql.org/learn/queries/#variables
     allProducts(first: $first, skip: $skip) {
       id
       name
