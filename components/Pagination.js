@@ -7,7 +7,7 @@ import { perPage } from '../config';
 import ErrorMessage from './ErrorMessage';
 import PaginationStyles from './styles/PaginationStyles';
 
-const PAGINATION_QUERY = gql`
+export const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
     _allProductsMeta {
       count
@@ -22,7 +22,6 @@ export default function Pagination({ page }) {
   if (error) return <ErrorMessage error={error} />;
   const { count } = data._allProductsMeta;
   const pageCount = Math.ceil(count/perPage);
-  console.log('pageCount:', pageCount);
 
   return (
     <PaginationStyles>

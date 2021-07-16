@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 // https://nextjs.org/docs/routing/introduction
 import Router from 'next/router';
 import { ALL_PRODUCTS_QUERY } from './Products';
+import { PAGINATION_QUERY } from './Pagination';
 import ErrorMessage from './ErrorMessage';
 import useForm from '../lib/useForm';
 import Form from "./styles/Form";
@@ -49,7 +50,10 @@ export default function CreateProduct() {
     { 
       variables: inputs,
       // * Docs: https://www.apollographql.com/docs/react/caching/advanced-topics/#rerunning-queries-after-a-mutation
-      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }] 
+      refetchQueries: [
+        { query: ALL_PRODUCTS_QUERY },
+        { query: PAGINATION_QUERY },
+      ] 
     }
   );
 
