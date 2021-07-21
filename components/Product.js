@@ -2,10 +2,13 @@
 import Link from 'next/link';
 
 import formatMoney from '../lib/formatMoney';
+
 import ItemStyled from './styles/ItemStyles';
-import DeleteProduct from './DeleteProduct';
 import PriceTag from './styles/PriceTag';
 import Title from './styles/Title';
+
+import AddToCart from './AddToCart';
+import DeleteProduct from './DeleteProduct';
 
 export default function Product({ product }) {
   return (
@@ -31,6 +34,7 @@ export default function Product({ product }) {
         }}>
           Edit 📝
         </Link>
+        <AddToCart id={product.id} />
         <DeleteProduct id={product.id}>Delete</DeleteProduct>
       </div>
     </ItemStyled>
