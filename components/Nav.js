@@ -4,7 +4,9 @@ import NavStyles from './styles/NavStyles';
 
 import { useCart } from '../lib/cartState.js';
 import { useUser } from './User';
+
 import SignOut from './SignOut';
+import CartCount from './CartCount';
 
 export default function Nav() {
   const user = useUser();
@@ -18,7 +20,10 @@ export default function Nav() {
           <Link href="/orders">Orders</Link>
           <Link href="/account">Account</Link>
           <SignOut />
-          <button type="button" onClick={openCart}>My Cart</button>
+          <button type="button" onClick={openCart}>
+            My Cart
+            <CartCount count={user.cart.reduce((tally, cartItem) => tally + cartItem?.quantity, 0)} />
+          </button>
         </>
       )}
     </NavStyles>
