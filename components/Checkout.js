@@ -1,12 +1,15 @@
+import { useState } from "react";
+import nProgress from "nprogress";
 import styled from "styled-components";
 
 // https://stripe.com/docs/stripe-js/react#elements-provider
 import { loadStripe } from "@stripe/stripe-js";
 
 // https://stripe.com/docs/stripe-js/react#element-components
-import { CardElement, Elements } from "@stripe/react-stripe-js";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 
 import SickButton from "./styles/SickButton";
+import { useCart } from '../lib/cartState.js';
 
 const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
@@ -23,31 +26,53 @@ const CheckoutFormStyles = styled.form`
 */  
 const stripeAPI = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
-function Checkout() {
-  function handleSubmit(e) {
+function CheckoutForm() {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  const stripe = useStripe()  //  * Docs: https://stripe.com/docs/stripe-js/react#usestripe-hook
+  const elements = useElements(); //  * Docs: https://stripe.com/docs/stripe-js/react#useelements-hook
+  const { closeCart } = useCart();
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log('e:', e);
+    setLoading(true);
+    nProgress.start();
+
+    //  ? Create the Payment Method via Stripe -> Get the Stripe Token!:
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+    });
+    console.log('Payment Token:', paymentMethod?.id);
+
+    if (error) {
+      setError(error);
+    };
+    // ? if successful:
     /*
       TODO Steps: 
-        1. Add a Loading indicator
-        2. Start Page Transition
-        3. Create the Payment Method via Stripe (Token comes back here if successful)
-        4. Handle any Errors from Stripe
         5. Send The Token from Step 3 to the Keystone Server via a Custom Mutation!!!
         6. Change the Page to view the Order
-        7. Close the Cart
-        8. Turn the Loading Indicator off
-    */ 
+    */
+    if (paymentMethod?.id) closeCart();
+    setLoading(false);
+    nProgress.done();
   }
 
   return (
+    <CheckoutFormStyles onSubmit={handleSubmit}>
+      {error && <p><small>{error.message}</small></p>}
+      <CardElement />
+      <SickButton>Check Out Now</SickButton>
+    </CheckoutFormStyles>
+  );
+}
+
+function Checkout() {
+  return (
     <Elements stripe={stripeAPI}>
-      <CheckoutFormStyles
-        onSubmit={handleSubmit}
-      >
-        <CardElement />
-        <SickButton>Check Out Now</SickButton>
-      </CheckoutFormStyles>
+      <CheckoutForm />
     </Elements>
   );
 }
