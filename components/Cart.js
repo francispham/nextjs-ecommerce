@@ -2,8 +2,9 @@ import Supreme from './styles/Supreme.js';
 import CartStyles from './styles/CartStyles.js';
 import CloseButton from './styles/CloseButton.js';
 
-import { useUser } from './User.js';
 import CartItem from './CartItem';
+import { useUser } from './User.js';
+import { Checkout } from './Checkout.js';
 
 import { useCart } from '../lib/cartState.js';
 import formatMoney from '../lib/formatMoney.js';
@@ -25,6 +26,7 @@ export default function Cart() {
     </ul>
     <footer>
       <p>{formatMoney(calcTotalPrice(currentUser.cart))}</p>
+      <Checkout />
     </footer>
   </CartStyles>;
 }
