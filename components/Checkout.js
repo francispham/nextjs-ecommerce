@@ -3,6 +3,9 @@ import { useState } from "react";
 import nProgress from "nprogress";
 import styled from "styled-components";
 
+// https://nextjs.org/docs/api-reference/next/router#userouter
+import { useRouter } from 'next/router';
+
 // https://stripe.com/docs/stripe-js/react#elements-provider
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -49,6 +52,7 @@ function CheckoutForm() {
   const stripe = useStripe()  //  * Docs: https://stripe.com/docs/stripe-js/react#usestripe-hook
   const elements = useElements(); //  * Docs: https://stripe.com/docs/stripe-js/react#useelements-hook
   const { closeCart } = useCart();
+  const router = useRouter();
 
   const [checkout, { error: graphQLError }] = useMutation(CREATE_ORDER_MUTATION);
 
@@ -72,15 +76,15 @@ function CheckoutForm() {
     const order = await checkout({
       variables: { token: paymentMethod.id },
     });
-    console.log('Finished with the Order!!!!');
-    console.log('order:', order);
+    console.log(`Finished with the ${order?.id}!!!!`);
+    
+    // ? Change the Page to view the Order
+    router.push({ //  * Docs: https://nextjs.org/docs/api-reference/next/router#with-url-object
+      pathname: '/order/[pId]',
+      query: { pId: order.data.checkoutNow.id },
+    });
 
-    /*
-      TODO Steps: 
-        6. Change the Page to view the Order
-    */
-
-    if (paymentMethod?.id) closeCart();
+    closeCart();
     setLoading(false);
     nProgress.done();
   }
