@@ -12,6 +12,9 @@ const Dot = styled.div`
   /* Make Numbers have same width */
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
+  position: relative;
+  top: -0.5rem;
+  left: -0.5rem;
 `;
 
 const AnimationStyles = styled.span`

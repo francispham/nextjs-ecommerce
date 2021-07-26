@@ -36,7 +36,7 @@ const HeaderStyles = styled.header`
   }
 `;
 
-export default function Header() {
+function OldHeader() {
   return (
     <HeaderStyles>
       <div className="bar">
@@ -52,3 +52,22 @@ export default function Header() {
     </HeaderStyles>
   );
 }
+
+function Header() {
+  return (
+    <header className="mb-8">
+      <div className="p-6 border-b-8 border-black flex flex-col items-center xl:flex-row">
+        <h1 className="bg-primary text-white inline-block p-2 uppercase text-4.5xl transform -skew-x-7">
+          <Link href="/">Sick fits</Link>
+        </h1>
+        <Nav />
+      </div>
+      <div className="sub-bar">
+      <Search />
+      </div>
+      <Cart />
+    </header>
+  );
+}
+
+export default Header;

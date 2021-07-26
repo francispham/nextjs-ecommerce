@@ -14,5 +14,5 @@ export default function SignOut() {
     refetchQueries: [{ query: CURRENT_USER_QUERY }]
   });
 
-  return <button type='button' onClick={signout}>Sign Out</button>;
+  return <a className="px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl" type='button' onClick={signout}>Sign Out</a>;
 };
