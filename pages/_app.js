@@ -4,11 +4,12 @@ import NProgress from 'nprogress'; // https://ricostacruz.com/nprogress/
 import Router from 'next/router';
 
 import { CartStateProvider } from '../lib/cartState';
+import withData from '../lib/withData';
 import Page from '../components/Page';
+import '../css/tailwind.css';
 
 // * Custom NProgress:
 import '../components/styles/nprogress.css';
-import withData from '../lib/withData';
 /* Default: 
 import 'nprogress/nprogress.css';
 */
