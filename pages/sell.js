@@ -1,5 +1,10 @@
 import CreateProduct from '../components/CreateProduct';
+import InitialSignIn from '../components/InitialSignIn';
 
 export default function SellPage() {
-  return <div><CreateProduct /></div>;
+  return <div>
+    <InitialSignIn>
+      <CreateProduct />
+    </InitialSignIn>
+  </div>;
 }
