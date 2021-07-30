@@ -41,7 +41,7 @@ const AnimationStyles = styled.span`
   }
 `;
 
-export default function CartCount({ count }) {
+function oldCartCount({ count }) {
   return (
     <AnimationStyles>
       <TransitionGroup>
@@ -58,3 +58,11 @@ export default function CartCount({ count }) {
     </AnimationStyles>
   );
 };
+
+function CartCount({ count }) {
+  return (
+    <span className="bg-primary text-white h-8 w-8 rounded-full flex items-center justify-center">{count}</span>
+  );
+};
+
+export default CartCount;

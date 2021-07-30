@@ -7,7 +7,6 @@ import { useUser } from './User';
 
 import SignOut from './SignOut';
 import CartCount from './CartCount';
-import link from 'next/link';
 
 function OldNav() {
   const user = useUser();
@@ -60,16 +59,30 @@ function Nav() {
         <>
           {links.map(({ href, text }) => (
             <Link key={text} href={href}>
-              <a className="px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl">{text}</a>
-              </Link>
+              <a className="relative group flex items-center px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl hover:no-underline">
+                <span className="absolute top-0 left-0 w-0.5 h-full bg-gray-200 transform -skew-x-20"/>
+                <span className="relative">
+                  {text}
+                  <span className="absolute w-full h-1 bg-primary -bottom-0 left-0 rounded-sm transform scale-x-0 group-hover:scale-x-100 
+                    transition ease-bloop duration-400"/>
+                </span>
+              </a>
+            </Link>
           ))}
           <SignOut />
-          <a className="flex px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl text-center" type="button" onClick={openCart}>
-            My Cart
-            <CartCount count={user.cart.reduce((tally, cartItem) => tally + cartItem?.quantity, 0)} />
+          <a className="relative group flex items-center px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl text-center hover:no-underline" type="button" onClick={openCart}>
+            <span className="absolute top-0 left-0 w-0.5 h-full bg-gray-200 transform -skew-x-20"/>
+            <span className="relative">
+              <span className="flex items-center space-x-2">
+                <span>My Cart</span>
+                <CartCount count={user.cart.reduce((tally, cartItem) => tally + cartItem?.quantity, 0)} />
+              </span>
+              <span className="absolute w-full h-1 bg-primary -bottom-0 left-0 rounded-sm transform scale-x-0 group-hover:scale-x-100 
+                transition ease-bloop duration-400"/>
+            </span>
           </a>
         </>
-      ) : <Link href="/products"><a className="px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl">Products</a></Link>}
+      ) : <Link href="/products"><a className="relative px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl hover:no-underline">Products</a></Link>}
     </nav>
   );
 }
