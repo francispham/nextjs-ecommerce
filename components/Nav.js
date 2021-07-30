@@ -47,6 +47,14 @@ const links = [
     href: '/account',
     text: 'Account',
   },
+  {
+    href: '/signin',
+    text: 'Sign Out',
+  },
+  {
+    href: '',
+    text: 'My Cart',
+  },
 ];
 
 function Nav() {
@@ -58,31 +66,38 @@ function Nav() {
       {user ? (
         <>
           {links.map(({ href, text }) => (
-            <Link key={text} href={href}>
+            <Link key={text} href={href} passHref>
               <a className="relative group flex items-center px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl hover:no-underline">
                 <span className="absolute top-0 left-0 w-0.5 h-full bg-gray-200 transform -skew-x-20"/>
                 <span className="relative">
-                  {text}
+                  {
+                    text === 'Sign Out' ? <SignOut text={text} /> 
+                    : text === 'My Cart' 
+                    ? <span className="flex items-center space-x-2" type="button" onClick={openCart}>
+                        <span>My Cart</span>
+                        <CartCount count={user.cart.reduce((tally, cartItem) => tally + cartItem?.quantity, 0)} />
+                      </span> 
+                    : text
+                  }
                   <span className="absolute w-full h-1 bg-primary -bottom-0 left-0 rounded-sm transform scale-x-0 group-hover:scale-x-100 
                     transition ease-bloop duration-400"/>
                 </span>
               </a>
             </Link>
           ))}
-          <SignOut />
-          <a className="relative group flex items-center px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl text-center hover:no-underline" type="button" onClick={openCart}>
+        </>
+      ) : (
+        <Link href={links[0].href}>
+          <a className="relative group flex items-center px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl hover:no-underline">
             <span className="absolute top-0 left-0 w-0.5 h-full bg-gray-200 transform -skew-x-20"/>
             <span className="relative">
-              <span className="flex items-center space-x-2">
-                <span>My Cart</span>
-                <CartCount count={user.cart.reduce((tally, cartItem) => tally + cartItem?.quantity, 0)} />
-              </span>
+              {links[0].text}
               <span className="absolute w-full h-1 bg-primary -bottom-0 left-0 rounded-sm transform scale-x-0 group-hover:scale-x-100 
                 transition ease-bloop duration-400"/>
             </span>
-          </a>
-        </>
-      ) : <Link href="/products"><a className="relative px-8 text-xl uppercase flex-shrink-0 xl:px-8 xl:text-xl hover:no-underline">Products</a></Link>}
+          </a>        
+        </Link>
+      )}
     </nav>
   );
 }
